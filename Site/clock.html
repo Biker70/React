@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8" />
+    <meta name="author" content="Mika Lumme" />
     <title>Tick</title>
     <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
@@ -14,21 +15,39 @@
     <link href="css/mystyle.css" rel="stylesheet">
 </head>
 <body>
-    <div id="root">
-
-    </div>
+    <div id="root"></div>
 
     <script type="text/babel">
+        class Clock extends React.Component{
+            constructor(props){
+                super(props);
+                this.state = {date: new Date()};
+            }
 
-        function tick(){
-            const element =(
+            componentDidMount(){
+                this.timerID = setInterval(() => this.tick(),1000);
+            }
 
-                <h3>{new Date().toLocaleTimeString()}</h3>
-            );
-            ReactDOM.render(element, document.getElementById('root'));
+            componentWillUnMount(){
+                clearInterval(this.timerID);
+            }
+
+            tick(){
+                this.setState({
+                    date: new Date()
+                });
+            }
+            
+            render(){
+                return (
+                    <div>
+                        <p>{this.state.date.toLocaleTimeString()}</p>
+                    </div>
+                );
+            }
         }
 
-        setInterval(tick, 1000);
+        ReactDOM.render(<Clock />, document.getElementById('root'));
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
